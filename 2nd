@@ -1,0 +1,61 @@
+2. Create a web application that displays a list of sports Questions. Allow the user to click on a Question to view their roster
+PROGRAM:
+Index.html:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Questions</title>
+</head>
+<body>
+    <h2>Sports Questions</h2>
+    <ul>
+        <li><a href="RosterServlet?question=1">Question 1</a></li>
+        <li><a href="RosterServlet?question=2">Question 2</a></li>
+        <li><a href="RosterServlet?question=3">Question 3</a></li>
+        <!-- Add more questions as needed -->
+    </ul>
+</body>
+</html>
+RoasterServlet.java:
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/RosterServlet")
+public class RosterServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String questionNumber = request.getParameter("question");
+        String roster = getRoster(questionNumber);
+        response.setContentType("text/html");
+        response.getWriter().println("<!DOCTYPE html>");
+        response.getWriter().println("<html lang=\"en\">");
+        response.getWriter().println("<head>");
+        response.getWriter().println("<meta charset=\"UTF-8\">");
+        response.getWriter().println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+        response.getWriter().println("<title>Roster</title>");
+        response.getWriter().println("</head>");
+        response.getWriter().println("<body>");
+        response.getWriter().println("<h2>Roster for Question " + questionNumber + "</h2>");
+        response.getWriter().println("<p>" + roster + "</p>");
+        response.getWriter().println("</body>");
+        response.getWriter().println("</html>");
+    }
+    private String getRoster(String questionNumber) {
+        if ("1".equals(questionNumber)) {
+            return "Roster for Question 1";
+        } else if ("2".equals(questionNumber)) {
+            return "Roster for Question 2";
+        } else if ("3".equals(questionNumber)) {
+            return "Roster for Question 3";
+        } else {
+            return "Invalid question number";
+        }
+    }
+}
